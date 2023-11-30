@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Auth from './pages/Auth';
+import SignUp from './pages/SignUp';
+import Home from './Components/Home';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import './App.css'; // Your main app styles
+import UserDetails from './Components/userdetails';
 
 function App() {
+  const [theme, setTheme] = useState('light-theme');
+
+  const handleThemeChange = () => {
+    setTheme(prevTheme => (prevTheme === 'light-theme' ? 'dark-theme' : 'light-theme'));
+  };
+  const router = createBrowserRouter([
+    {
+      path: '/', element: <Auth />
+    },
+    { path: '/signup', element: <SignUp /> },
+    { path: 'home', element: <Home handleThemeChange={handleThemeChange}/> },
+    { path: 'userdetails', element: <UserDetails/>}
+  ])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={`app ${theme}`}>
+      <RouterProvider router={router} />
+      {/* <Home handleThemeChange={handleThemeChange} /> */}
     </div>
   );
 }
