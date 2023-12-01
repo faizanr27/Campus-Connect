@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from '../config/firebase'; // Assuming you have a file './config/firebase' exporting 'auth' and 'db'
 import { doc, getDoc } from 'firebase/firestore';
 import "../App.css"; // Import your CSS file for styling
-import picc from "../picc.jpg";
 const Userprofile = () => {
 
   const [userDetails, setUserDetails] = useState({ name: '', profilePic: '' });
