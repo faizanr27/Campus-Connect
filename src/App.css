@@ -194,8 +194,8 @@
   position: sticky;
   top: 70px;
   /* z-index: 1000; */
-  height: 25vh; 
-  width: 25vh; 
+  height: 90vh; 
+  width: 35vh; 
   overflow-y: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #f8f9fa;
@@ -316,6 +316,7 @@
   margin-bottom: 20px;
   margin-left: -135px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: -900px;
 }
 
 .form-container h2 {
@@ -354,7 +355,7 @@
 
 .home .blog-container  {
   width: 400px;
-  margin: auto;
+  margin: -250px auto auto;
   margin-top: -250px;
 
   
