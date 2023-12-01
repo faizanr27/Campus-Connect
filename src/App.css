@@ -202,7 +202,7 @@
   border-radius: 8px;
   padding: 20px;
   margin-top: 20px; /* Adjust top margin to align with Navbar */
-  margin-left: 90px;
+  margin-left: 30px;
 }
 .light-theme .user-profile-container {
   background-color: #f8f9fa;
@@ -228,7 +228,9 @@
   margin: 0;
   color: #333;
 }
-
+.dark-theme h5.user-name {
+    color: white;
+}
 .profile-links {
   border-top: 1px solid #ccc;
   padding-top: 20px;
