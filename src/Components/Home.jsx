@@ -6,7 +6,7 @@ import Connections from "./Connections";
 import '../App.css';
 import UserDetails from "./UserDetails";
 import { auth,db } from "../config/firebase";
-import FriendList from "./FriendList";
+// import FriendList from "./FriendList";
 
 const Home = () => {
   const [user, setUser] = useState(null);
