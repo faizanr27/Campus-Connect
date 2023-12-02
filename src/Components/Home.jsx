@@ -55,7 +55,7 @@ const Home = () => {
     <div className={`home ${theme}`}>
       <Navbar handleThemeChange={handleThemeChange} handleDisplayChange={handleDisplayChange}/>
       <Userprofile handleDisplayUserDetails={handleDisplayUserDetails} />
-      {/* <Connections fetchUserData={user}/> */}
+      <Connections fetchUserData={user}/>
       {/* <FriendList user={user}/> */}
       {!displayUserDetails ? (
         <Blog />
