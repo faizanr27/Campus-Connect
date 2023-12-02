@@ -6,7 +6,7 @@ import Connections from "./Connections";
 import '../App.css';
 import UserDetails from "./UserDetails";
 import { auth,db } from "../config/firebase";
-import FriendList from "./FriendList";
+// import FriendList from "./FriendList";
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -55,7 +55,7 @@ const Home = () => {
     <div className={`home ${theme}`}>
       <Navbar handleThemeChange={handleThemeChange} handleDisplayChange={handleDisplayChange}/>
       <Userprofile handleDisplayUserDetails={handleDisplayUserDetails} />
-      {/* <Connections fetchUserData={user}/> */}
+      <Connections fetchUserData={user}/>
       {/* <FriendList user={user}/> */}
       {!displayUserDetails ? (
         <Blog />
