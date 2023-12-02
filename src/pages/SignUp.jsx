@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth,db } from '../config/firebase'
 import { toast, ToastContainer } from 'react-toastify';
@@ -12,6 +12,7 @@ function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [profilepic, setProfilePic] = useState('');
+    const navigate = useNavigate();
     const handleSignUp = async () => {
         try {
             // Create a new user account with the provided email and password
@@ -35,6 +36,7 @@ function SignUp() {
 
             // Show success notification
             toast.success('Signup successful!', { position: 'top-right' });
+            navigate("/home");
 
             // Redirect or perform other actions after successful signup
             // For example, you can redirect to a different page

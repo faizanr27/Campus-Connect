@@ -14,9 +14,11 @@ import {
   PowerIcon,
 } from "@heroicons/react/24/solid";
 import "../App.css"; // Import your CSS file for additional styling
+import { useNavigate } from "react-router-dom";
 
 const Userprofile = ({handleDisplayUserDetails}) => {
   const [userDetails, setUserDetails] = useState({ name: '', profilePic: '' });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -44,6 +46,14 @@ const Userprofile = ({handleDisplayUserDetails}) => {
     fetchUserData();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      navigate("/");
+    } catch (error) {
+      console.error('Error signing out: ', error);
+    }
+  };
   return (
     <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
 
@@ -82,7 +92,7 @@ const Userprofile = ({handleDisplayUserDetails}) => {
 
         Events
         </ListItem>
-        <ListItem>
+        <ListItem onClick={handleLogout}>
           <ListItemPrefix>
             <PowerIcon className="h-5 w-5" />
           </ListItemPrefix>

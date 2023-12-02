@@ -4,6 +4,7 @@ import SignUp from './pages/SignUp';
 import Home from './Components/Home';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css'; // Your main app styles
+import Connections from './Components/Connections';
 
 function App() {
   const [theme, setTheme] = useState('light-theme');

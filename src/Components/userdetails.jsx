@@ -12,8 +12,6 @@ const UserDetails = () => {
   const [userDetails, setUserDetails] = useState(null);
   const [newDisplayName, setNewDisplayName] = useState('');
   const [newProfilePic, setNewProfilePic] = useState(null);
-  // const [editUsername, setEditUsername] = useState(false);
-  // const [editProfilePic, setEditProfilePic] = useState(false);
   const [editOptions, setEditOptions] = useState(false); // Added state for the edit options
 
   useEffect(() => {
