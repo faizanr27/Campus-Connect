@@ -3,8 +3,10 @@ import "../App.css";
 import { db } from '../config/firebase';
 import { collection, query, where, getDocs, setDoc, serverTimestamp, doc  } from 'firebase/firestore';
 import ThemeToggler from "./ThemeToggler"; // Import your ThemeToggler component
+import { Link } from "react-router-dom";
+import Home from "./Home";
 
-const Navbar = ({ handleThemeChange }) => {
+const Navbar = ({ handleThemeChange, handleDisplayChange }) => {
   const [showThemePopup, setShowThemePopup] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -77,8 +79,8 @@ const Navbar = ({ handleThemeChange }) => {
     <nav className="navbar">
       <div className="navbar-brand">Collab Hub</div>
       <ul className="navbar-menu">
-        <li className="nav-item">
-          <a href="#" className="nav-link active">Home</a>
+        <li className="nav-item" onClick={handleDisplayChange}>
+          <Link to={'/home'} className="nav-link active" >Home</Link>
         </li>
         <li className="nav-item">
           <a href="#" className="nav-link">Messages</a>

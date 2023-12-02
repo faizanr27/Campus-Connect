@@ -4,8 +4,7 @@ import Userprofile from "./Userprofile";
 import Blog from "./Blog";
 import Connections from "./Connections";
 import '../App.css';
-import ThemeToggler from "./ThemeToggler";
-// import UserDetails from "./userdetails";
+import UserDetails from "./UserDetails";
 
 const Home = () => {
   const connections = [
@@ -15,20 +14,35 @@ const Home = () => {
     // ... other connections
   ];
 
+  const [displayUserDetails, setDisplayUserDetails] = useState(false);
+  // const [displayBlog, setDisplayBlog] = useState(true);
+  
   const [theme, setTheme] = useState('light-theme'); // Default theme is light
 
+  const handleDisplayUserDetails = () => {
+    setDisplayUserDetails(true);
+  };
+  const handleDisplayChange = () => {
+    setDisplayUserDetails(false);
+  }
+ 
   const handleThemeChange = (themeClass) => {
     setTheme(themeClass);
   };
 
   return (
     <div className={`home ${theme}`}>
-      <Navbar handleThemeChange={handleThemeChange} />
-      <Userprofile />
-      <Blog />
+      <Navbar handleThemeChange={handleThemeChange} handleDisplayChange={handleDisplayChange}/>
+      <Userprofile handleDisplayUserDetails={handleDisplayUserDetails} />
       <Connections connections={connections} />
-      <ThemeToggler handleThemeChange={handleThemeChange} />
-      {/* <UserDetails /> */}
+      {!displayUserDetails ? (
+        <Blog />
+        
+      ) : (
+        <>
+          <UserDetails />
+        </>
+      )}
     </div>
   );
 };

@@ -4,7 +4,6 @@ import SignUp from './pages/SignUp';
 import Home from './Components/Home';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css'; // Your main app styles
-import UserDetails from './Components/userdetails';
 
 function App() {
   const [theme, setTheme] = useState('light-theme');
@@ -17,8 +16,7 @@ function App() {
       path: '/', element: <Auth />
     },
     { path: '/signup', element: <SignUp /> },
-    { path: 'home', element: <Home handleThemeChange={handleThemeChange}/> },
-    { path: 'userdetails', element: <UserDetails/>}
+    { path: 'home/*', element: <Home handleThemeChange={handleThemeChange}/> },
   ])
   return (
     <div className={`app ${theme}`}>

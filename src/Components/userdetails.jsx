@@ -6,6 +6,9 @@ import { updateProfile } from 'firebase/auth';
 import '../App.css';
 
 const UserDetails = () => {
+  const divStyle = {
+    marginTop: '-960px'
+  };
   const [userDetails, setUserDetails] = useState(null);
   const [newDisplayName, setNewDisplayName] = useState('');
   const [newProfilePic, setNewProfilePic] = useState(null);
@@ -96,7 +99,7 @@ const UserDetails = () => {
   };
 
   return (
-    <div>
+    <div style={divStyle}>
       {/* Edit icon for both username and profile picture */}
      <div className="flex flex-col justify-center max-w-xs p-6 shadow-md rounded-xl sm:px-12 dark:bg-gray-900 dark:text-gray-100 mx-auto">
         <div className="flex justify-end mb-4">
