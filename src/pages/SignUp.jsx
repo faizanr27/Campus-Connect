@@ -30,13 +30,14 @@ function SignUp() {
                 email,
                 profilepic
               });
+              await setDoc(doc(db, "userChats", userCredential.user.uid), {});
               setProfilePic('');
             // Optionally, you can send a verification email to the user
             // await user.sendEmailVerification();
 
             // Show success notification
             toast.success('Signup successful!', { position: 'top-right' });
-            navigate("/home");
+            navigate("/");
 
             // Redirect or perform other actions after successful signup
             // For example, you can redirect to a different page
@@ -102,7 +103,7 @@ function SignUp() {
                     Already have an account?{' '}
                     <Link
                         className="text-red-600 hover:underline hover:underline-offset-4"
-                        to="/"
+                        to="/signin"
                     >
                         SignIn
                     </Link>

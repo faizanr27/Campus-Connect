@@ -21,7 +21,7 @@ function Auth() {
             await signInWithEmailAndPassword(auth, email, password);
 
             // Optionally, you can redirect to a different page after successful login
-            navigate('/home');
+            navigate('/');
         } catch (error) {
             console.error('Error signing in:', error.message);
 
