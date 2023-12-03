@@ -6,14 +6,20 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { ThemeProvider } from "@material-tailwind/react";
+import { AuthContextProvider } from './context/AuthContext';
+import { ChatContextProvider } from './context/ChatContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <AuthContextProvider>
+  <ChatContextProvider>
   <React.StrictMode>
     <ThemeProvider>
     <App />
     </ThemeProvider>
   </React.StrictMode>
+  </ChatContextProvider>
+  </AuthContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

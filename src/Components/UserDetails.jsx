@@ -1,45 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { auth, db, storage } from '../config/firebase'; // Assuming you have a file './config/firebase' exporting 'auth' and 'db'
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { updateProfile } from 'firebase/auth';
 import '../App.css';
+import { AuthContext } from '../context/AuthContext';
 
 const UserDetails = () => {
   const divStyle = {
     marginTop: '-960px'
   };
-  const [userDetails, setUserDetails] = useState(null);
   const [newDisplayName, setNewDisplayName] = useState('');
   const [newProfilePic, setNewProfilePic] = useState(null);
   const [editOptions, setEditOptions] = useState(false); // Added state for the edit options
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // Check if there's a logged-in user
-        auth.onAuthStateChanged(async (user) => {
-          if (user) {
-            // User is signed in, retrieve user details
-            const userRef = doc(db, 'users', user.uid);
-            const userSnapshot = await getDoc(userRef);
-            if (userSnapshot.exists()) {
-              setUserDetails(userSnapshot.data());
-            } else {
-              console.log('No such document!');
-            }
-          } else {
-            // No user is signed in
-            console.log('No user signed in');
-          }
-        });
-      } catch (error) {
-        console.error('Error fetching user data: ', error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+  
+  const {currentUser} = useContext(AuthContext);
 
   const handleDisplayNameChange = async () => {
     if (newDisplayName.trim() !== '') {
@@ -55,7 +30,7 @@ const UserDetails = () => {
   const handleProfilePicChange = async () => {
     if (newProfilePic) {
       try {
-        const storageRef = ref(storage, `${userDetails.displayName}-${Date.now()}`);
+        const storageRef = ref(storage, `${currentUser.displayName}-${Date.now()}`);
         const uploadTask = uploadBytesResumable(storageRef, newProfilePic);
 
         uploadTask.on(
@@ -151,22 +126,20 @@ const UserDetails = () => {
       
 
       {/* Display user details */}
-      {/* <div className="flex flex-col justify-center max-w-xs p-6 shadow-md rounded-xl sm:px-12 dark:bg-gray-900 dark:text-gray-100 mx-auto"> */}
-        {/* User details */}
         <img
           src={
-            userDetails
-              ? userDetails.profilepic || 'default-profile-pic-url' // Replace 'default-profile-pic-url' with your default URL
+            currentUser
+              ? currentUser.photoURL || 'default-profile-pic-url' // Replace 'default-profile-pic-url' with your default URL
               : 'default-profile-pic-url'
           }
           alt="Profile"
           className="w-32 h-32 mx-auto rounded-full dark:bg-gray-500 aspect-square"
         />
-        {userDetails ? (
+        {currentUser ? (
           <div className="space-y-4 text-center divide-y dark:divide-gray-700">
             <div className="my-2 space-y-1">
-              <h2 className="text-xl font-semibold sm:text-2xl">{userDetails.displayName}</h2>
-              <p className="px-5 text-xs sm:text-base dark:text-gray-400">{userDetails.email}</p>
+              <h2 className="text-xl font-semibold sm:text-2xl">{currentUser.displayName}</h2>
+              <p className="px-5 text-xs sm:text-base dark:text-gray-400">{currentUser.email}</p>
             </div>
           </div>
         ) : (

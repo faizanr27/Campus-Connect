@@ -1,44 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import { db } from '../config/firebase'; // Import your Firebase db instance or configuration
+import React, { useEffect, useState,useContext } from 'react';
+import {
+  List,
+  ListItem,
+  ListItemPrefix,
+  Avatar,
+  Card,
+  Typography,
+} from "@material-tailwind/react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../config/firebase";
+import { AuthContext } from '../context/AuthContext';
+import { ChatContext } from '../context/ChatContext';
+import '../App.css';
 
-const Connections = ({ currentUser, refreshConnections }) => {
-  const [connections, setConnections] = useState([]);
+const Connections = () => {
+  const [chats, setChats] = useState([]);
+  
+
+  const { currentUser } = useContext(AuthContext);
+  const { dispatch } = useContext(ChatContext);
 
   useEffect(() => {
-    const fetchConnections = async () => {
-      try {
-        if (currentUser) {
-          const userConnectionsRef = db.collection('connections').doc(currentUser.uid);
-          const doc = await userConnectionsRef.get();
+    const getChats = () => {
+      const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
+        setChats(doc.data());
+        console.log(doc.data());
+      });
 
-          if (doc.exists) {
-            setConnections(doc.data().userConnections || []);
-          } else {
-            console.log('No connections found for the current user.');
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching connections:', error);
-      }
+      return () => {
+        unsub();
+      };
     };
 
-    fetchConnections();
-  }, [currentUser, refreshConnections]); // Include refreshConnections in the dependency array
+    currentUser.uid && getChats();
+  }, [currentUser.uid]);
 
+ 
+
+  const handleSelect = (u) => {
+    dispatch({type:"CHANGE_USER", payload: u})
+  }
+  
   return (
-    <div className="connections-container">
-      <h2>My Connections</h2>
-      <ul className="connections-list">
-        {connections.map((connection, index) => (
-          <li key={index} className="connection-item">
-            {/* Display connection details */}
-            <p>Name: {connection.displayName}</p>
-            {/* Display other connection details */}
-          </li>
-        ))}
-      </ul>
+    <div className="home connections-container"> {/* Apply appropriate classes */}
+      <Card>
+        <List className="connections-list"> {/* Apply appropriate classes */}
+          {Object.entries(chats)
+            .sort(([, a], [, b]) => b.date?.seconds - a.date?.seconds)
+            .map(([chatId, chat]) => (
+              <ListItem variant="rectangular" key={chatId} onClick={() => handleSelect(chat?.userInfo)}>
+                <ListItemPrefix>
+                  <Avatar
+                    variant="circular"
+                    alt={chat?.userInfo?.displayName || 'Fallback Alt Text'}
+                    src={chat?.userInfo?.photoURL || 'Fallback Image URL'}
+                  />
+                </ListItemPrefix>
+                <div>
+                  <Typography variant="h6" color="blue-gray">
+                    {chat?.userInfo?.displayName || 'Fallback User Name'}
+                  </Typography>
+                </div>
+              </ListItem>
+            ))}
+        </List>
+      </Card>
     </div>
   );
+  
+  
+  
 };
 
 export default Connections;

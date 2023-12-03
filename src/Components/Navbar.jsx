@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import "../App.css";
 import { db,auth } from '../config/firebase';
-import { collection, query, where, getDocs, setDoc, serverTimestamp, doc  } from 'firebase/firestore';
+import { collection, query, where, getDoc, setDoc, serverTimestamp, doc,updateDoc, getDocs,  } from 'firebase/firestore';
 import ThemeToggler from "./ThemeToggler"; // Import your ThemeToggler component
 import { Link } from "react-router-dom";
-import Home from "./Home";
 import {
   Avatar,
   Card,
   Typography,
 } from "@material-tailwind/react";
+import { AuthContext } from "../context/AuthContext";
 
-const Navbar = ({ handleThemeChange, handleDisplayChange }) => {
+const Navbar = ({ handleThemeChange, handleDisplayChange, handleDisplayChat }) => {
   const [showThemePopup, setShowThemePopup] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState({name: '', profilePic: ''});
-  const [connections, setConnections] = useState([]);
-  const [refreshConnections, setRefreshConnections] = useState(false);
+
+  const [users, setUsers] = useState(null);
+  const {currentUser} = useContext(AuthContext);
+  // const [username, setUsername] = useState("");
 
   const toggleThemePopup = () => {
     setShowThemePopup(!showThemePopup);
@@ -29,16 +31,18 @@ const Navbar = ({ handleThemeChange, handleDisplayChange }) => {
           const usersRef = collection(db, 'users');
           const q = query(
             usersRef,
-            where('displayName', '>=', searchQuery),
-            where('displayName', '<=', searchQuery + '\uf8ff')
+            where("displayName", "==", searchQuery)
           );
           const querySnapshot = await getDocs(q);
-
+      querySnapshot.forEach((doc) => {
+        setUsers(doc.data());
+      });
           const results = [];
           querySnapshot.forEach((doc) => {
             results.push(doc.data());
           });
-
+    
+           // Update users state with search results
           setSearchResults(results);
         } catch (error) {
           console.error('Error searching users:', error);
@@ -59,40 +63,47 @@ const Navbar = ({ handleThemeChange, handleDisplayChange }) => {
     console.log(`View profile of ${displayName}`);
     // Implement logic to navigate to the user's profile or perform an action related to viewing the profile
   };
-  const handleAddConnection = async (otherUser) => {
+  const handleAddConnection = async (currentUser, users) => {
+    const combinedId =
+      currentUser.uid > users.uid
+        ? currentUser.uid + users.uid
+        : users.uid + currentUser.uid;
     try {
-      const currentUser = auth.currentUser; // Get the current authenticated user
+      const res = await getDoc(doc(db, "chats", combinedId));
+      if (!res.exists()) {
+        // Create a chat in the "chats" collection
+        await setDoc(doc(db, "chats", combinedId), { messages: [] });
   
-      if (!currentUser) {
-        console.error('User not authenticated.');
-        return;
+        const currentUserPhotoURL = currentUser.profilepic ? currentUser.profilepic : 'default_profile_pic_url';
+      const usersPhotoURL = users.profilepic ? users.profilepic : 'default_profile_pic_url';
+        // Create user chats for currentUser
+        await updateDoc(doc(db, "userChats", currentUser.uid), {
+          [combinedId + ".userInfo"]: {
+            uid: users.uid,
+            displayName: users.displayName,
+            photoURL: usersPhotoURL,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+    
+        // Update user chats for users
+        await updateDoc(doc(db, "userChats", users.uid), {
+          [combinedId + ".userInfo"]: {
+            uid: currentUser.uid,
+            displayName: currentUser.displayName,
+            photoURL: currentUserPhotoURL,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
       }
-  
-      const connectionsRef = collection(db, 'connections'); // Ensure 'connections' is a valid collection path in your Firestore
-  
-      const connectionId = getCombinedUserId(currentUser.uid, otherUser.uid); // Function to create a unique ID for the connection
-  
-      const connectionDocRef = doc(connectionsRef, connectionId);
-  
-      const connectionData = {
-        users: [currentUser.uid, otherUser.uid], // Store user IDs in an array
-        userNames: [currentUser.displayName, otherUser.displayName], // Store user display names in an array
-        createdAt: serverTimestamp()
-      };
-  
-      await setDoc(connectionDocRef, connectionData);
-  
-      console.log(`Added connection between ${currentUser.displayName} and ${otherUser.displayName}`);
-    } catch (error) {
-      console.error('Error adding connection:', error);
+      
+      console.log("Adding connections between",currentUser.displayName,"And",users.displayName );
+    } catch (err) {
+      console.log(err)
     }
-  };
-  
-  // Function to create a combined user ID for the connection
-  const getCombinedUserId = (userId1, userId2) => {
-    // Sort user IDs to create a consistent combined ID
-    const sortedUserIds = [userId1, userId2].sort();
-    return `${sortedUserIds[0]}_${sortedUserIds[1]}`;
+
+    setUsers(null);
+    // setUsername("");
   };
 
 
@@ -101,9 +112,10 @@ const Navbar = ({ handleThemeChange, handleDisplayChange }) => {
       <div className="navbar-brand">Collab Hub</div>
       <ul className="navbar-menu">
         <li className="nav-item" onClick={handleDisplayChange}>
-          <Link to={'/home'} className="nav-link active" >Home</Link>
+          {/* <Link to={'/home'} className="nav-link active" >Home</Link> */}
+          <a href="#" className="nav-link active" >Home</a>
         </li>
-        <li className="nav-item">
+        <li className="nav-item" onClick={handleDisplayChat}>
           <a href="#" className="nav-link">Messages</a>
         </li>
         <li className="nav-item">
@@ -147,7 +159,7 @@ const Navbar = ({ handleThemeChange, handleDisplayChange }) => {
           </div>
           <div className="flex items-center">
             <button
-              onClick={() => handleAddConnection(user)}
+              onClick={() => handleAddConnection(currentUser,users)}
               className="px-2 py-1 bg-blue-500 text-white rounded ml-2"
             >
               Add Connection

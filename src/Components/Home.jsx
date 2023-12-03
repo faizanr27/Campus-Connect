@@ -6,7 +6,11 @@ import Connections from "./Connections";
 import '../App.css';
 import UserDetails from "./UserDetails";
 import { auth,db } from "../config/firebase";
+<<<<<<< Updated upstream
 // import FriendList from "./FriendList";
+=======
+import ContainerComponent from "./Chat/ContainerComponent";
+>>>>>>> Stashed changes
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -36,16 +40,26 @@ const Home = () => {
 
 
   const [displayUserDetails, setDisplayUserDetails] = useState(false);
-  // const [displayBlog, setDisplayBlog] = useState(true);
+  const [displayChat, setDisplayChat] = useState(false);
+  const [displaySideBar, setDisplaySideBar] = useState(true);
   
   const [theme, setTheme] = useState('light-theme'); // Default theme is light
 
-  const handleDisplayUserDetails = () => {
-    setDisplayUserDetails(true);
-  };
   const handleDisplayChange = () => {
+    setDisplayChat(false);
+    setDisplayUserDetails(false);
+    setDisplaySideBar(true);
+  }
+  const handleDisplayChat = () => {
+    setDisplayChat(true);
+    setDisplaySideBar(false);
     setDisplayUserDetails(false);
   }
+  const handleDisplayUserDetails = () => {
+    setDisplayUserDetails(true);
+    setDisplayChat(false);
+  };
+ 
  
   const handleThemeChange = (themeClass) => {
     setTheme(themeClass);
@@ -53,6 +67,7 @@ const Home = () => {
 
   return (
     <div className={`home ${theme}`}>
+<<<<<<< Updated upstream
       <Navbar handleThemeChange={handleThemeChange} handleDisplayChange={handleDisplayChange}/>
       <Userprofile handleDisplayUserDetails={handleDisplayUserDetails} />
       <Connections fetchUserData={user}/>
@@ -65,6 +80,16 @@ const Home = () => {
           <UserDetails />
         </>
       )}
+=======
+      <Navbar handleThemeChange={handleThemeChange} handleDisplayChange={handleDisplayChange} handleDisplayChat={handleDisplayChat} />
+      
+      <Connections fetchUserData={user}/>
+      {displaySideBar && !displayChat && <Userprofile handleDisplayUserDetails={handleDisplayUserDetails} />}
+      {!displayChat && !displayUserDetails && <Blog />}
+    {!displaySideBar &&!displayUserDetails && <ContainerComponent />}
+    {displayUserDetails && <UserDetails />}
+      
+>>>>>>> Stashed changes
     </div>
   );
 };
