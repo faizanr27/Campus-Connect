@@ -51,8 +51,9 @@ const UserListComponent = () => {
               <ListItemPrefix>
                 <Avatar
                   variant="circular"
-                  alt={chat?.userInfo?.displayName || 'Fallback Alt Text'}
                   src={chat?.userInfo?.photoURL || 'Fallback Image URL'}
+                  alt={chat?.userInfo?.displayName || 'Fallback Alt Text'}
+                  
                 />
               </ListItemPrefix>
               <div>

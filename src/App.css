@@ -1,7 +1,8 @@
 /* Navbar.css */
 .home{
-  background-color: #eaebeb;
+  /* background-color: #eaebeb; */
   height: 100vh;
+  z-index: 0;
 }
 
 .home .navbar {
@@ -297,10 +298,10 @@
 }
 
 /* BlogPostForm.css */
-.light-theme .form-container {
+/* .light-theme .form-container {
   background-color: #f9f9f9;
   color: #333;
-}
+} */
 .dark-theme .form-container {
   background-color: #343a40;
   color: #ffffff;
@@ -310,7 +311,7 @@
   color: #333;
   border: none;
 }
- .form-container {
+ /* .form-container {
   width: 600px;
   padding: 20px;
   border-radius: 5px;
@@ -319,9 +320,9 @@
   margin-left: -135px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-top: -900px;
-}
+} */
 
-.form-container h2 {
+/* .form-container h2 {
   margin-top: 0;
   font-size: 24px;
 }
@@ -329,18 +330,18 @@
 .form-container label {
   display: block;
   margin-bottom: 8px;
-}
+} */
 
 .form-container input[type='text'],
 .form-container textarea {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   margin-bottom: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-.form-container button {
+/* .form-container button {
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
@@ -351,25 +352,24 @@
 
 .form-container button:hover {
   background-color: #0056b3;
-}
+} */
 
 /* Blog.css */
 
 .home .blog-container  {
-  width: 400px;
+  width: 500px;
   margin: -250px auto auto;
-  margin-top: -250px;
-
+  margin-top: -900px;
+  height: 7vh;
   
 }
 
 .blog-post {
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: #fff;
   margin-bottom: 20px;
   padding: 20px;
-  margin-left: -50px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .light-theme .blog-post {

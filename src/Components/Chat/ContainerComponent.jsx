@@ -101,7 +101,7 @@ const ContainerComponent = () => {
   return (
     <div className="home flex fixed w-full bg-gray-100">
       {/* Sidebar */}
-      <div className="w-1/4 h-5/6 bg-white border-r border-gray-300">
+      <div className="w-1/4 h-5/6 bg-white border-r border-gray-300 overflow-y-auto">
         <div className="p-4 h-5/6  mt-6">
           <UserListComponent handleSelect={handleSelect}/>
         </div>
