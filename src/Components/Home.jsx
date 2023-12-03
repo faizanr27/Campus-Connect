@@ -6,11 +6,7 @@ import Connections from "./Connections";
 import '../App.css';
 import UserDetails from "./UserDetails";
 import { auth,db } from "../config/firebase";
-<<<<<<< Updated upstream
-// import FriendList from "./FriendList";
-=======
 import ContainerComponent from "./Chat/ContainerComponent";
->>>>>>> Stashed changes
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -67,20 +63,6 @@ const Home = () => {
 
   return (
     <div className={`home ${theme}`}>
-<<<<<<< Updated upstream
-      <Navbar handleThemeChange={handleThemeChange} handleDisplayChange={handleDisplayChange}/>
-      <Userprofile handleDisplayUserDetails={handleDisplayUserDetails} />
-      <Connections fetchUserData={user}/>
-      {/* <FriendList user={user}/> */}
-      {!displayUserDetails ? (
-        <Blog />
-        
-      ) : (
-        <>
-          <UserDetails />
-        </>
-      )}
-=======
       <Navbar handleThemeChange={handleThemeChange} handleDisplayChange={handleDisplayChange} handleDisplayChat={handleDisplayChat} />
       
       <Connections fetchUserData={user}/>
@@ -89,7 +71,6 @@ const Home = () => {
     {!displaySideBar &&!displayUserDetails && <ContainerComponent />}
     {displayUserDetails && <UserDetails />}
       
->>>>>>> Stashed changes
     </div>
   );
 };
